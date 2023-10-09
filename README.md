@@ -14,7 +14,6 @@ fn main() {
     if let Some(item) = parser.result(){
         println!("{} = {}", input, item);
     }
-    
 }
 ```
 Running `cargo run` the result is:
