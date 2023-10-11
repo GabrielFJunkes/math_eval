@@ -177,7 +177,7 @@ impl Parser<'_> {
                         if !self.operation_stack.is_empty(){
                             loop {
                                 if let Some(PExpr::Op(last_op)) = self.operation_stack.last() {
-                                    if last_op.order()>operation.order() {
+                                    if last_op.order()>=operation.order() {
                                         let Some(last_op) = self.operation_stack.pop() else {
                                             panic!("Error poping op from op stack")
                                         };
