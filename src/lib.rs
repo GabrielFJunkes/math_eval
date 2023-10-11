@@ -2,6 +2,21 @@
 //!
 //! A library for evaluating mathematical expressions.
 //! This library uses Shunting Yard Algorithm for parsing math expressions in infix notations.
+//!
+//! # Example
+//! ```rust
+//! use math_eval::Parser;
+//! fn main() {
+//!     // Define expression as input String
+//!     let input = String::from("(1 + 2*10)/(2+5)");
+//!     // Create Parser with input String
+//!     let mut parser = Parser::new(&input);
+//!     // Calls parser.result() to evaluate the expression
+//!     if let Some(item) = parser.result(){
+//!         assert_eq!(item, "3");
+//!     }
+//! }
+//! ```
 
 use std::str::Chars;
 use std::collections::VecDeque;
@@ -38,6 +53,7 @@ enum PExpr {
     Bracket(BType)
 }
 
+/// Struct to parse and evaluate math expression
 pub struct Parser<'a> {
     input: Chars<'a>,
     list: VecDeque<PExpr>,
@@ -47,6 +63,20 @@ pub struct Parser<'a> {
 }
 
 impl Parser<'_> {
+    /// Returns a parser with provided string as input
+    ///
+    /// # Arguments
+    ///
+    /// * `input_string` - A string reference to the math expression to evaluate
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use math_eval::Parser;
+    /// let input = String::from("1 + 2");
+    /// // Must be mutable
+    /// let mut parser = Parser::new(&input);
+    /// ```
     pub fn new(input_string: &String) -> Parser {
         let input_string = input_string.chars();
         Parser { 
@@ -263,6 +293,20 @@ impl Parser<'_> {
         }
     }
 
+    /// Tries to evaluate the math expression
+    /// - If succeeds returns Some(value)
+    /// - If it fails returns None
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use math_eval::Parser;
+    /// let input = String::from("1 + 2");
+    /// let mut parser = Parser::new(&input);
+    /// if let Some(result) = parser.result() {
+    ///     assert_eq!(result, "3");
+    /// }
+    /// ```
     pub fn result(&mut self) -> Option<String> {
         self.resolve();
         if let Some(item) = self.output_queue.get(0) {
